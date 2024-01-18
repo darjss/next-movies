@@ -1,40 +1,154 @@
 import { useState } from "react";
 import Card from "@/components/Card";
-const Home=()=>{
-  const [movies, setMovies]=useState([]);
-  const [topMovies, setTopMovies]=useState([]);
-  const getMovies= async ()=>{
-    const response=await fetch('https://api.themoviedb.org/3/movie/popular?language=en-US&page=1&api_key=bfb05274c15c4567464450df0a88ea54');
-    const data=await response.json();
+const Home = () => {
+  const [movies, setMovies] = useState([]);
+  const [topMovies, setTopMovies] = useState([]);
+  const [trendSeries, setTrendSeries] = useState([]);
+  const [topSeries, setTopSeries] = useState([]);
+  const yearTop = [];
+  let searchName;
+  const [searchResults, setSearchResults] = useState([]);
+  const [myTop, setMyTop] = useState(yearTop);
+  const getMovies = async () => {
+    const response = await fetch(
+      "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1&api_key=bfb05274c15c4567464450df0a88ea54"
+    );
+    const data = await response.json();
     setMovies(data.results);
-    const page1=await fetch('https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1&api_key=bfb05274c15c4567464450df0a88ea54');
-    const data1=await page1.json();
-    const page2=await fetch('https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=2&api_key=bfb05274c15c4567464450df0a88ea54');
-    const data2=await page2.json();
-    const page3=await fetch('https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=3&api_key=bfb05274c15c4567464450df0a88ea54');
-    const data3=await page3.json();
-    const topData=data1.results.concat(data2.results, data3.results)
+    const page1 = await fetch(
+      "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1&api_key=bfb05274c15c4567464450df0a88ea54"
+    );
+    const data1 = await page1.json();
+    const page2 = await fetch(
+      "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=2&api_key=bfb05274c15c4567464450df0a88ea54"
+    );
+    const data2 = await page2.json();
+    const page3 = await fetch(
+      "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=3&api_key=bfb05274c15c4567464450df0a88ea54"
+    );
+    const data3 = await page3.json();
+    const topData = data1.results.concat(data2.results, data3.results);
+    const top1 = await fetch(
+      
+      "https://api.themoviedb.org/3/movie/872585?language=en-US&api_key=bfb05274c15c4567464450df0a88ea54"
+    ).then((response) => response.json());
+    yearTop.push(top1);
+    const top2 = await fetch(
+      "https://api.themoviedb.org/3/movie/840430?language=en-US&api_key=bfb05274c15c4567464450df0a88ea54"
+    ).then((response) => response.json());
+    yearTop.push(top2);
+    const top3 = await fetch(
+      "https://api.themoviedb.org/3/movie/1016084?language=en-US&api_key=bfb05274c15c4567464450df0a88ea54"
+    ).then((response) => response.json());
+    yearTop.push(top3);
+    const top4 = await fetch(
+      "https://api.themoviedb.org/3/movie/747188?language=en-US&api_key=bfb05274c15c4567464450df0a88ea54"
+    ).then((response) => response.json());
+    yearTop.push(top4);
+    const top5 = await fetch(
+      "https://api.themoviedb.org/3/movie/915935?language=en-US&api_key=bfb05274c15c4567464450df0a88ea54"
+    ).then((response) => response.json());
+    yearTop.push(top5);
+    const top6 = await fetch(
+      "https://api.themoviedb.org/3/movie/615777?language=en-US&api_key=bfb05274c15c4567464450df0a88ea54"
+    ).then((response) => response.json());
+    yearTop.push(top6);
+    setMyTop(yearTop);
+      console.log(yearTop)
     setTopMovies(topData);
+  };
+  const getSeries = async () => {
+    const tvPage1 = await fetch(
+      "https://api.themoviedb.org/3/tv/popular?language=en-US&page=1&api_key=bfb05274c15c4567464450df0a88ea54"
+    );
+    const tvData1 = await tvPage1.json();
+    setTrendSeries(tvData1.results);
+    const tvPage2 = await fetch(
+      "https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1&api_key=bfb05274c15c4567464450df0a88ea54"
+    );
+    const tvData2 = await tvPage2.json();
+    setTopSeries(tvData2.results);
+  };
+  const search = async () => {
+    let requestURL = "https://api.themoviedb.org/3/search/movie?query=";
 
-  }
-  getMovies();
-  return(
-    <div>
-          <div>
-            <h1 className="text-3xl text-center">Popular this week
-            </h1>
-          <div className="flex flex-wrap gap-5 bg-violet-100">
-      {movies.map((movie)=><Card info={movie}/>)}
-    </div>
-    </div>
-    <div>
-      <p className="text-3xl text-center">Top rated</p>
-      <div className="flex flex-wrap gap-5 bg-emerald-100">{topMovies.map((movie)=><Card info={movie}/>)}</div>
-    </div>
-    </div>
-    
-
-
-  )
-}
-export default Home
+    let seperated = searchName.split(" ");
+    let filterWords = seperated.filter((word) => word != "");
+    filterWords.map((word, index) => {
+      index == 0 ? (requestURL += word) : (requestURL += "+" + word);
+    });
+    requestURL += "&api_key=bfb05274c15c4567464450df0a88ea54";
+    const searchResult = await fetch(requestURL).then((response) =>
+      response.json()
+    );
+    setSearchResults(searchResult.results);
+    // console.log(requestURL);
+    // console.log(searchResult);
+  };
+  const getName = (event) => {
+    searchName = event.target.value;
+    // console.log(searchName);
+  };
+  return (
+    <div className="bg-amber-50">
+      <button onClick={getMovies}>Movies</button>
+      <div>
+        <input
+          onChange={getName}
+          placeholder="Type a name of the movie"
+        ></input>
+        <button onClick={search}>Search</button>
+                <div>
+          <p className="text-3xl text-center">Search Results</p>
+          <div className="flex flex-wrap gap-5 bg-indigo-100">
+            {searchResults.map((movie) => (
+              <Card info={movie} />
+            ))}
+          </div>
+      </div>
+      <div>
+        <div>
+          <p className="text-3xl text-center">Best of 2023</p>
+          <div className="flex flex-wrap gap-5 bg-indigo-100">
+            {myTop.map((movie) => (
+              <Card info={movie} />
+            ))}
+          </div>
+        </div>
+        <h1 className="text-3xl text-center">Popular this week</h1>
+        <div className="flex flex-wrap gap-5 bg-violet-100">
+          {movies.map((movie) => (
+            <Card info={movie} />
+          ))}
+        </div>
+      </div>
+      <div>
+        <p className="text-3xl text-center">Top rated</p>
+        <div className="flex flex-wrap gap-5 bg-emerald-100">
+          {topMovies.map((movie) => (
+            <Card info={movie} />
+          ))}
+        </div>
+      </div>
+      <button onClick={getSeries}>Shows</button>
+      <div>
+        <p className="text-3xl text-center"> Popular This week</p>
+        <div className="flex flex-wrap gap-5 bg-emerald-100">
+          {trendSeries.map((series) => (
+            <Card info={series} />
+          ))}
+        </div>
+      </div>
+      <div>
+        <p className="text-3xl text-center">Top rated </p>
+        <div className="flex flex-wrap gap-5 bg-violet-100">
+          {topSeries.map((series) => (
+            <Card info={series} />
+          ))}
+        </div>
+      </div>
+      </div>
+      </div>
+  );
+};
+export default Home;
