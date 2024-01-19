@@ -67,6 +67,7 @@ const Home = () => {
       "https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1&api_key=bfb05274c15c4567464450df0a88ea54"
     );
     const tvData2 = await tvPage2.json();
+    console.log(tvData2.results);
     setTopSeries(tvData2.results);
   };
   const search = async () => {
@@ -90,65 +91,74 @@ const Home = () => {
     // console.log(searchName);
   };
   return (
-    <div className="bg-amber-50">
+    <div className="bg-amber-50 w-screen">
       <button onClick={getMovies}>Movies</button>
       <div>
-        <input
-          onChange={getName}
-          placeholder="Type a name of the movie"
-        ></input>
-        <button onClick={search}>Search</button>
-                <div>
+        <div className="flex justify-center">
+          <input
+            className="w-[400px] h-[50px]  rounded-xl bg-amber-100"
+            onChange={getName}
+            placeholder="Type a name of the movie"
+          ></input>
+          <button
+            className="border-lime-300 border-2 border-solid rounded-xl"
+            onClick={search}
+          >
+            Search
+          </button>
+        </div>
+
+        <div>
           <p className="text-3xl text-center">Search Results</p>
           <div className="flex flex-wrap gap-5 bg-indigo-100">
             {searchResults.map((movie) => (
-              <Card info={movie} />
+              <Card info={movie} type="movie" />
             ))}
           </div>
-      </div>
-      <div>
+        </div>
         <div>
-          <p className="text-3xl text-center">Best of 2023</p>
-          <div className="flex flex-wrap gap-5 bg-indigo-100">
-            {myTop.map((movie) => (
-              <Card info={movie} />
+          <div>
+            <p className="text-3xl text-center">Best of 2023</p>
+            <div className="flex flex-wrap gap-5 bg-indigo-100">
+              {myTop.map((movie) => (
+                <Card info={movie} type="movie" />
+              ))}
+            </div>
+          </div>
+          <h1 className="text-3xl text-center">Popular this week</h1>
+          <div className="flex flex-wrap gap-5 bg-violet-100">
+            {movies.map((movie) => (
+              <Card info={movie} type="movie" />
             ))}
           </div>
         </div>
-        <h1 className="text-3xl text-center">Popular this week</h1>
-        <div className="flex flex-wrap gap-5 bg-violet-100">
-          {movies.map((movie) => (
-            <Card info={movie} />
-          ))}
+        <div>
+          <p className="text-3xl text-center">Top rated</p>
+          <div className="flex flex-wrap gap-5 bg-emerald-100">
+            {topMovies.map((movie) => (
+              <Card info={movie} type="movie" />
+            ))}
+          </div>
+        </div>
+        <button onClick={getSeries}>Shows</button>
+        <div>
+          <p className="text-3xl text-center"> Popular This week</p>
+          <div className="flex flex-wrap gap-5 bg-emerald-100">
+            {trendSeries.map((series) => (
+              <Card info={series} type="show" />
+            ))}
+          </div>
+        </div>
+        <div>
+          <p className="text-3xl text-center">Top rated </p>
+          <div className="flex flex-wrap gap-5 bg-violet-100">
+            {topSeries.map((series) => (
+              <Card info={series} type="show" />
+            ))}
+          </div>
         </div>
       </div>
-      <div>
-        <p className="text-3xl text-center">Top rated</p>
-        <div className="flex flex-wrap gap-5 bg-emerald-100">
-          {topMovies.map((movie) => (
-            <Card info={movie} />
-          ))}
-        </div>
-      </div>
-      <button onClick={getSeries}>Shows</button>
-      <div>
-        <p className="text-3xl text-center"> Popular This week</p>
-        <div className="flex flex-wrap gap-5 bg-emerald-100">
-          {trendSeries.map((series) => (
-            <Card info={series} />
-          ))}
-        </div>
-      </div>
-      <div>
-        <p className="text-3xl text-center">Top rated </p>
-        <div className="flex flex-wrap gap-5 bg-violet-100">
-          {topSeries.map((series) => (
-            <Card info={series} />
-          ))}
-        </div>
-      </div>
-      </div>
-      </div>
+    </div>
   );
 };
 export default Home;
