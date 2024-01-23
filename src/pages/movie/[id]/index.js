@@ -1,11 +1,15 @@
 import { useParams } from "next/navigation";
 import Details from "@/components/Details";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 const Movies = () => {
   let { id } = useParams();
   const [selectedMovie, setSelectedMovie] = useState({});
   const [trailerURL, setTrailerURL] = useState("");
+  // useEffect(() => {
+  //   fetchMovie();
+  //   getTrailer();
+  // }, [])
   id = id.slice(1, id.length - 1);
   const fetchMovie = async () => {
     let getURL = "https://api.themoviedb.org/3/movie/";
@@ -32,10 +36,7 @@ const Movies = () => {
     console.log(trailer);
     setTrailerURL(ytURL);
   };
-  const showBoth = () => {
-    getTrailer();
-    fetchMovie();
-  }
+
   console.log(id);
   return (
     <div className="flex flex-col">
