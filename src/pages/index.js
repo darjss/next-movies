@@ -1,5 +1,6 @@
 import { StrictMode, useEffect, useState } from "react";
 import Card from "@/components/Card";
+import Link from "next/link";
 const Home = () => {
   const [movies, setMovies] = useState([]);
   const [topMovies, setTopMovies] = useState([]);
@@ -12,7 +13,7 @@ const Home = () => {
   useEffect(() => {
     getMovies();
     getSeries();
-  },[])
+  }, []);
   const getMovies = async () => {
     const response = await fetch(
       "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1&api_key=bfb05274c15c4567464450df0a88ea54"
@@ -75,7 +76,7 @@ const Home = () => {
   };
   const search = async () => {
     let MVrequestURL = "https://api.themoviedb.org/3/search/movie?query=";
-    let TVrequestURL = "https://api.themoviedb.org/3/search/movie?query=";
+    let TVrequestURL = "https://api.themoviedb.org/3/search/tv?query=";
     let APIkey = "&api_key=bfb05274c15c4567464450df0a88ea54";
     let seperated = searchName.split(" ");
     let filterWords = seperated.filter((word) => word != "");
@@ -85,11 +86,15 @@ const Home = () => {
     });
     MVrequestURL += APIkey;
     TVrequestURL += APIkey;
-    const searchResult = await fetch(MVrequestURL).then((response) =>
+    const searchMovie = await fetch(MVrequestURL).then((response) =>
       response.json()
     );
-    
-    setSearchResults(searchResult.results);
+    const searchTV = await fetch(TVrequestURL).then((response) =>
+      response.json()
+    );
+    const searchResult = searchMovie.results.concat(searchTV.results);
+    console.log(searchTV.results);
+    setSearchResults(searchResult);
     // console.log(requestURL);
     // console.log(searchResult);
   };
@@ -100,6 +105,23 @@ const Home = () => {
   return (
     <StrictMode>
       <div className="bg-amber-50 w-screen">
+        <ul className="flex justify-evenly py-10 text-xl">
+          <Link href="#picks">
+            <li>Staff Picks</li>
+          </Link>
+          <Link href="#popularMV">
+            <li>Popular Movies</li>
+          </Link>
+          <Link href="#topMV">
+            <li>Top Rated Movies</li>
+          </Link>
+          <Link href="#popularTV">
+            <li>Popular Shows</li>
+          </Link>
+          <Link href="#topTV">
+            <li>Top Rated Shows</li>
+          </Link>
+        </ul>
         <div>
           <div className="flex justify-center">
             <input
@@ -125,14 +147,16 @@ const Home = () => {
           </div>
           <div>
             <div>
-              <p className="text-3xl text-center">Best of 2023</p>
+              <p id="picks" className="text-3xl text-center">Best of 2023</p>
               <div className="flex flex-wrap gap-5 bg-indigo-100">
                 {myTop.map((movie) => (
                   <Card info={movie} type="movie" />
                 ))}
               </div>
             </div>
-            <h1 className="text-3xl text-center">Popular this week</h1>
+            <h1 id="popularMV" className="text-3xl text-center">
+              Popular this week
+            </h1>
             <div className="flex flex-wrap gap-5 bg-violet-100">
               {movies.map((movie) => (
                 <Card info={movie} type="movie" />
@@ -140,7 +164,7 @@ const Home = () => {
             </div>
           </div>
           <div>
-            <p className="text-3xl text-center">Top rated</p>
+            <p id="topMV" className="text-3xl text-center">Top rated</p>
             <div className="flex flex-wrap gap-5 bg-emerald-100">
               {topMovies.map((movie) => (
                 <Card info={movie} type="movie" />
@@ -148,7 +172,7 @@ const Home = () => {
             </div>
           </div>
           <div>
-            <p className="text-3xl text-center"> Popular This week</p>
+            <p id="popularTV" className="text-3xl text-center"> Popular This week</p>
             <div className="flex flex-wrap gap-5 bg-emerald-100">
               {trendSeries.map((series) => (
                 <Card info={series} type="show" />
@@ -156,7 +180,7 @@ const Home = () => {
             </div>
           </div>
           <div>
-            <p className="text-3xl text-center">Top rated </p>
+            <p id="topTV" className="text-3xl text-center">Top rated </p>
             <div className="flex flex-wrap gap-5 bg-violet-100">
               {topSeries.map((series) => (
                 <Card info={series} type="show" />

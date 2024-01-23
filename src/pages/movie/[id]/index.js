@@ -2,24 +2,37 @@ import { useParams } from "next/navigation";
 import Details from "@/components/Details";
 import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
+import Link from "next/link";
 const Movies = () => {
   let { id } = useParams();
   const [selectedMovie, setSelectedMovie] = useState({});
   const [trailerURL, setTrailerURL] = useState("");
-  // useEffect(() => {
-  //   fetchMovie();
-  //   getTrailer();
-  // }, [])
+  useEffect(() => {
+    fetchMovie();
+    // getTrailer();
+  }, []);
+  let watchLink = "https://movie-web.app/media/tmdb-movie-"
   id = id.slice(1, id.length - 1);
   const fetchMovie = async () => {
     let getURL = "https://api.themoviedb.org/3/movie/";
     getURL += id + "?language=en-US&api_key=bfb05274c15c4567464450df0a88ea54";
     const movie = await fetch(getURL).then((response) => response.json());
+    watchLink += movie.id;
+    let arr = movie.title.split(" ");
+    let words = arr.filter((word) => word != "");
+    words.map((word) => {
+      word = word.toLowerCase();
+      watchLink += "-" + word;
+    });
+    //https://movie-web.app/media/tmdb-movie-872585-oppenheimer
+    //https://movie-web.app/media/tmdb-movie-872585-oppenheimer
+    // api.themoviedb.org/3/movie/{movie_id}/videos
+    //  https://api.kinocheck.de/movies?tmdb_id=299534&language=de&categories=Trailer
+    console.log(watchLink);
     console.log(movie);
     console.log(getURL);
     setSelectedMovie(movie);
     console.log(typeof id);
-
   };
   const getTrailer = async () => {
     let trailerLink =
@@ -39,9 +52,13 @@ const Movies = () => {
 
   console.log(id);
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col items-center">
       <ReactPlayer url={trailerURL} controls="true" />
-      <button onClick={fetchMovie}>SHOW MOVIE</button>
+      <Link
+        href={"https://movie-web.app/media/tmdb-movie-747188-asteroid-city"}
+      >
+        <button onClick={fetchMovie}>SHOW MOVIE</button>
+      </Link>
       <button onClick={getTrailer}>SHOW TRAILER</button>
       <Details info={selectedMovie} />
     </div>

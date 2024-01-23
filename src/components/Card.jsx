@@ -1,13 +1,7 @@
 import Link from "next/link";
 const CardMV = ({ info, type }) => {
   let posterLink = "https://image.tmdb.org/t/p/w500/" + info.poster_path;
-  let watchLink = "https://movie-web.app/media/tmdb-movie-" + info.id;
-  // let arr = info.title.split(" ");
-  // let words = arr.filter((word) => word != "");
-  // words.map((word) => {
-  //   word = word.toLowerCase();
-  //   watchLink += "-" + word;
-  // });
+
   //movie-web.app/media/tmdb-movie-747188-asteroid-city
   // console.log(info);
   //movie-web.app/media/tmdb-movie-695721-the-hunger-games-the-ballad-of-songbirds-and-snakes

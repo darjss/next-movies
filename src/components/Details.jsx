@@ -1,8 +1,6 @@
 const Details = ({ info }) => {
   let posterLink = "https://image.tmdb.org/t/p/w500/" + info.poster_path;
-  //api.themoviedb.org/3/movie/{movie_id}/videos
-  //  https://api.kinocheck.de/movies?tmdb_id=299534&language=de&categories=Trailer
-
+  console.log(info);
 
   return (
     <div className="flex gap-8 self-center border rounded p-5">
