@@ -18,7 +18,7 @@ const CardMV = ({ info, type }) => {
   );
   }
   if(type=="show") {
-        return <Link href={`./movie/{${info.id}}`}>
+        return <Link href={`./movie/${info.id}`}>
           <div className="w-[200px]  p-3 border-solid border-amber-400 border-2">
             <img className="rounded" src={posterLink} alt="poster" />
             <div className="h-[50px]  text-clip overflow-hidden">

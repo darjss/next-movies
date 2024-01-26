@@ -3,15 +3,18 @@ import Details from "@/components/Details";
 import { useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import Link from "next/link";
+import { useRouter } from "next/router";
 const Movies = () => {
-  let { id } = useParams();
+  let router = useRouter();
+  let { id } = router.query;
+  console.log(id);
   const [selectedMovie, setSelectedMovie] = useState({});
   const [trailerURL, setTrailerURL] = useState("");
   useEffect(() => {
     fetchMovie();
     // getTrailer();
-  }, []);
-  let watchLink = "https://movie-web.app/media/tmdb-movie-"
+  }, [id]);
+  let watchLink = "https://movie-web.app/media/tmdb-movie-";
   id = id.slice(1, id.length - 1);
   const fetchMovie = async () => {
     let getURL = "https://api.themoviedb.org/3/movie/";
