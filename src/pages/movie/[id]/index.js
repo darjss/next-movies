@@ -15,6 +15,7 @@ const Movies = () => {
     // getTrailer();
   }, [id]);
   let watchLink = "https://movie-web.app/media/tmdb-movie-";
+  console.log(id);
   id = id.slice(1, id.length - 1);
   const fetchMovie = async () => {
     let getURL = "https://api.themoviedb.org/3/movie/";
@@ -57,12 +58,18 @@ const Movies = () => {
   return (
     <div className="flex flex-col items-center">
       <ReactPlayer url={trailerURL} controls="true" />
-      <Link
-        href={"https://movie-web.app/media/tmdb-movie-747188-asteroid-city"}
-      >
-        <button onClick={fetchMovie}>SHOW MOVIE</button>
-      </Link>
-      <button onClick={getTrailer}>SHOW TRAILER</button>
+      <div className="flex gap-5">
+        <Link href={"/"}>
+          <button>Back</button>
+        </Link>
+        <Link
+          href={"https://movie-web.app/media/tmdb-movie-747188-asteroid-city"}
+        >
+          <button onClick={fetchMovie}>SHOW MOVIE</button>
+        </Link>
+        <button onClick={getTrailer}>SHOW TRAILER</button>
+      </div>
+
       <Details info={selectedMovie} />
     </div>
   );
